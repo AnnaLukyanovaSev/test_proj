@@ -7,7 +7,7 @@ return [
             'class' => 'yii\web\User',
             'identityClass' => 'common\models\User',
         ],
-        'request' => [
+       'request' => [
             'cookieValidationKey' => 'test',
         ],
     ],
