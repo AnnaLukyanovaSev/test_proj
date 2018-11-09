@@ -9,10 +9,26 @@ $this->title = 'Family money';
     <div class="jumbotron">
         <h1>Hello!</h1>
 
-        <p class="lead"> <b>You have successfully entered our site! You'll be rich with us:)</b></p>
-
+        <p class="lead"><b>You have successfully entered our site! You'll be rich with us:)</b></p>
+        <br>
+        <?php
+        if (Yii::$app->user->isGuest) {
+            echo 'This site is created for accuracy in your money spend.';
+            echo 'If you want to take all possibilities of our site,please,sign up.';
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            echo "<br>";
+            return null;
+        } ?>
         <p><a class="btn btn-lg btn-success" href="http://fam_money.test/profile/info">Profile information</a></p>
     </div>
+
 
     <div class="body-content">
 
