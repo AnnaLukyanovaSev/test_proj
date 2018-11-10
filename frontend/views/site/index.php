@@ -38,31 +38,30 @@ $this->title = 'Family money';
 
                 <p>Add your family members to your own group.
                     It allows them to see your accounts and transactions.</p>
-
-                <p><a class="btn btn-default" href="http://fam_money.test/family">Family &raquo;</a></p>
+                <p><ul>
+                    <li><a href="http://fam_money.test/family/create">Create family</a></li>
+                    <li><a href="http://fam_money.test/family/view">My family</a></li>
+                </ul><p>
             </div>
             <div class="col-lg-4">
                 <h2>Accounts</h2>
 
-                <p>Create,update and delete your accounts in any currency</p>
-
-                <p><a class="btn btn-default" href="http://fam_money.test/family">Accounts &raquo;</a></p>
+                <p>Create,update and delete your accounts in any currency.</p>
+                      <p><ul>
+                    <li><a href="http://fam_money.test/account/create">Create account</a></li>
+                    <li><a href="http://fam_money.test/account/index">My accounts</a></li>
+                </ul><p>
             </div>
             <div class="col-lg-4">
                 <h2>Transactions</h2>
 
-                <p>Create,update and delete your transactions in any currency</p>
-
-                <p><a class="btn btn-default" href="http://fam_money.test/family">Transactions &raquo;</a></p>
+                <p>Create,update and delete your account transactions in any currency.</p>
+                <p><ul>
+                    <li><a href="http://fam_money.test/transaction/create">Create transaction</a></li>
+                    <li><a href="http://fam_money.test/transaction/view">My transactions</a></li>
+                </ul><p>
             </div>
 
-            <div class="col-lg-4">
-                <h2>Categories</h2>
-
-                <p>Create,update and delete categories of your salaries and losses </p>
-
-                <p><a class="btn btn-default" href="http://fam_money.test/family">Transactions &raquo;</a></p>
-            </div>
         </div>
 
     </div>
