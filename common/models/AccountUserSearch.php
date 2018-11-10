@@ -58,4 +58,20 @@ class AccountUserSearch extends Account
 
         return $dataProvider;
     }
+
+    public function statistic()
+    {
+        $all=Account::find()->select("currency")->count();
+        $ruble = Account::find()->select("currency")
+            ->where('currency=:currency', [':currency' => 'RUB'])->count();
+        $dollar = Account::find()->select("currency")
+            ->where('currency=:currency', [':currency' => 'USD'])->count();
+        $euro = Account::find()->select("currency")
+            ->where('currency=:currency', [':currency' => 'EUR'])->count();
+        $hryvna = Account::find()->select("currency")
+            ->where('currency=:currency', [':currency' => 'UAH'])->count();
+
+        $statistic=array('ALL' => $all,'RUB' =>$ruble,'USD' => $dollar, 'EUR' =>$euro, 'UAH' =>$hryvna);
+        return $statistic;
+    }
 }

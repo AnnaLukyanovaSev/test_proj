@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+
 /**
  * This is the model class for table "account".
  *
@@ -45,7 +46,7 @@ class Account extends \yii\db\ActiveRecord
             [['name', 'currency', 'amount'], 'required'],
             ['amount', 'integer'],
             [['name', 'currency'], 'string', 'max' => 255],
-            ['user_id','default','value' => strval(Yii::$app->user->identity->getId())],
+            ['user_id', 'default', 'value' => strval(Yii::$app->user->identity->getId())],
             [
                 ['family_id'],
                 'exist',
