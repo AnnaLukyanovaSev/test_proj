@@ -5,7 +5,6 @@ use yii\grid\GridView;
 
 /* @var $model common\models\Account */
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\AccountSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Accounts';

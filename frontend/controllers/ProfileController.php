@@ -6,8 +6,6 @@ use Yii;
 use common\models\Profile;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use common\models\forms\ProfileForm;
-use common\models\User;
 use yii\filters\AccessControl;
 
 class ProfileController extends Controller

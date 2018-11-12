@@ -40,6 +40,7 @@ class CategoryController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -67,12 +68,13 @@ class CategoryController extends Controller
     public function actionCreate()
     {
         $model = new Category();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($model->sub == null) {
+        if ($model->load(Yii::$app->request->post())) { //если в приложении можно делать post - запросы, то..
+            if ($model->sub == null) { // ..если нет выбора категорий вообще, создаем root
                 $model->makeRoot();
-            } else {
+            } else { // ..если есть корень - > все остальные категории - потомки
                 $parent = Category::find()->where(['id' => $model->sub])->one();
-                $model->prependTo($parent);
+                // ищем родителя с id, соответствующим выбранной категории
+                $model->prependTo($parent); // прикрепляем потомка
             }
         }
         if ($model->save()) {

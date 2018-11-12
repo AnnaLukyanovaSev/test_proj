@@ -50,6 +50,7 @@ $this->title = 'Family money';
                       <p><ul>
                     <li><a href="http://fam_money.test/account/create">Create account</a></li>
                     <li><a href="http://fam_money.test/account/index">My accounts</a></li>
+                    <li><a href="http://fam_money.test/account/stat">Currency statistics</a></li>
                 </ul><p>
             </div>
             <div class="col-lg-4">
@@ -57,7 +58,7 @@ $this->title = 'Family money';
 
                 <p>Create,update and delete your account transactions in any currency.</p>
                 <p><ul>
-                    <li><a href="http://fam_money.test/transaction/create">Create transaction</a></li>
+                    <li><a href="http://fam_money.test/category/create">Create category</a></li>
                     <li><a href="http://fam_money.test/transaction/view">My transactions</a></li>
                 </ul><p>
             </div>

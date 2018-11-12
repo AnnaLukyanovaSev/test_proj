@@ -123,15 +123,14 @@ class AccountController extends Controller
     }
     /**
      * @return mixed
-     * @throws \Exception
      */
     public function actionStat()
     {
         $st = new AccountUserSearch();
         $ar = $st->statistic();
-        if ($ar['ALL'] == 0) {
-            throw new \Exception('No statistics is available now.');
-        }
+        //if ($ar['ALL'] == 0) {
+          //  throw new \Exception('No statistics is available now.');
+       // }
         return $this->render('stat', ['model' => $ar]);
     }
 }
