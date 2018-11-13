@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 $this->title = 'Create category';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="category-create">
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -21,8 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ->hint('Enter category name')->label('Category name') ?>
 
     <?= $form->field($model, 'sub')
-        ->dropDownList(ArrayHelper::map(common\models\Category::find()->orderBy('lft')->all(), 'id', 'name'))
-       // ->dropDownList(\common\models\Category::findOne(['depth'=>'0'])->getDescendants('name')->one(), ['prompt' => 'Choose parent category...'])
+        ->dropDownList(common\models\Category::tree())
         ->label('Parent category') ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

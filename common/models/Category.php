@@ -3,9 +3,10 @@
 namespace common\models;
 
 use yii\db\ActiveRecord;
-use paulzi\nestedsets\NestedSetsBehavior;
+use creocoder\nestedsets\NestedSetsBehavior;
 use yii\behaviors\TimestampBehavior;
 use Yii;
+use wokster\treebehavior\NestedSetsTreeBehavior;
 
 /**
  * @property Family $family
@@ -24,8 +25,11 @@ class Category extends ActiveRecord
     public function behaviors()
     {
         return [
-            [
-                'class' => NestedSetsBehavior::class,
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+            ],
+            'htmlTree' => [
+                'class' => NestedSetsTreeBehavior::className()
             ],
             [
                 'class' => TimestampBehavior::className(),
@@ -111,4 +115,18 @@ class Category extends ActiveRecord
         return $this->hasMany(Transaction::className(), ['category_id' => 'id']);
     }
 
+    public static function tree(): array
+    {
+        $all = self::find()->select(['id', 'name', 'lft', 'rgt', 'depth'])->asArray()->all();
+        $maxDepth = self::find()->max('depth');
+        foreach ($all as $row) {
+            if ($row['depth'] == 0) {
+                ;
+            };
+        }
+        $tree = [
+
+        ];
+        return $tree;
+    }
 }
