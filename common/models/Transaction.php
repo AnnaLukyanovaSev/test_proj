@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "transaction".
@@ -32,16 +33,29 @@ class Transaction extends \yii\db\ActiveRecord
         return 'transaction';
     }
 
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    parent::EVENT_BEFORE_INSERT => ['created_at']
+                ]
+            ]
+        ];
+    }
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['amount', 'user_id', 'currency', 'account_id', 'category_id', 'date'], 'required'],
+            [['amount','currency', 'account_id', 'category_id', 'date'], 'required'],
             [['amount', 'user_id', 'account_id', 'category_id', 'family_id', 'created_at'], 'integer'],
+            ['user_id', 'default', 'value' => strval(Yii::$app->user->identity->getId())],
             [['date'], 'safe'],
             [['currency'], 'string', 'max' => 255],
+
             [['account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['family_id'], 'exist', 'skipOnError' => true, 'targetClass' => Family::className(), 'targetAttribute' => ['family_id' => 'id']],

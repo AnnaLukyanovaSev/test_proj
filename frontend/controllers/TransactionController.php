@@ -3,29 +3,26 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\Category;
-use common\models\CategoryUserSearch;
+use common\models\Transaction;
+use common\models\TransactionUserSearch;
+use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
+use common\models\Account;
+use yii\db\Expression;
 
-class CategoryController extends Controller
+/**
+ * TransactionController implements the CRUD actions for Transaction model.
+ */
+class TransactionController extends Controller
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['view', 'error', 'create', 'update', 'index', 'delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -36,14 +33,13 @@ class CategoryController extends Controller
     }
 
     /**
+     * Lists all Transaction models.
      * @return mixed
      */
     public function actionIndex()
     {
-
-        $searchModel = new CategoryUserSearch();
+        $searchModel = new TransactionUserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -51,6 +47,7 @@ class CategoryController extends Controller
     }
 
     /**
+     * Displays a single Transaction model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,22 +60,17 @@ class CategoryController extends Controller
     }
 
     /**
+     * Creates a new Transaction model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Category();
-        if ($model->load(Yii::$app->request->post())) { //если в приложении можно делать post - запросы, то..
-            if ($model->sub == null) { // ..если нет выбора категорий вообще, создаем root
-                $model->makeRoot();
-            } else { // ..если есть корень - > все остальные категории - потомки
-                $parent = Category::find()->where(['id' => $model->sub])->one();
-                // ищем родителя с id, соответствующим выбранной категории
-                $model->prependTo($parent); // прикрепляем потомка
-            }
-        }
-        if ($model->save()) {
-            return $this->render('view', ['model' => $model]);
+        $model = new Transaction();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id])
+                && Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
         }
 
         return $this->render('create', [
@@ -87,6 +79,8 @@ class CategoryController extends Controller
     }
 
     /**
+     * Updates an existing Transaction model.
+     * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -105,6 +99,8 @@ class CategoryController extends Controller
     }
 
     /**
+     * Deletes an existing Transaction model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -117,13 +113,15 @@ class CategoryController extends Controller
     }
 
     /**
+     * Finds the Transaction model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Category the loaded model
+     * @return Transaction the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = Transaction::findOne($id)) !== null) {
             return $model;
         }
 

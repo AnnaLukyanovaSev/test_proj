@@ -46,7 +46,7 @@ $this->title = 'Family money';
             <div class="col-lg-4">
                 <h2>Accounts</h2>
 
-                <p>Create,update and delete your accounts in any currency.</p>
+                <p>Create,update and delete your accounts in different currencies.</p>
                       <p><ul>
                     <li><a href="http://fam_money.test/account/create">Create account</a></li>
                     <li><a href="http://fam_money.test/account/index">My accounts</a></li>
@@ -56,10 +56,11 @@ $this->title = 'Family money';
             <div class="col-lg-4">
                 <h2>Transactions</h2>
 
-                <p>Create,update and delete your account transactions in any currency.</p>
+                <p>Create,update and delete your account transactions in different currencies.</p>
                 <p><ul>
                     <li><a href="http://fam_money.test/category/create">Create category</a></li>
-                    <li><a href="http://fam_money.test/transaction/view">My transactions</a></li>
+                    <li><a href="http://fam_money.test/transaction/create">Create transaction</a></li>
+                    <li><a href="http://fam_money.test/transaction/index">My transactions</a></li>
                 </ul><p>
             </div>
 

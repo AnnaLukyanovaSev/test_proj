@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ->hint('Enter category name')->label('Category name') ?>
 
     <?= $form->field($model, 'sub')
-        ->dropDownList(common\models\Category::tree())
+        ->dropDownList(ArrayHelper::map(common\models\Category::find()->all(),'id','name'))
         ->label('Parent category') ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
