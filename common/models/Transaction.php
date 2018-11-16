@@ -25,9 +25,25 @@ use yii\behaviors\TimestampBehavior;
  */
 class Transaction extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
+    public $receiver;
+
+    public static function create(int $amount, string $currency, int $account_id, int $category_id, $date): self
+    {
+        $object = new static();
+        $object->amount = $amount;
+        $object->currency = $currency;
+        $object->account_id = $account_id;
+        $object->category_id = $category_id;
+        $object->date = $date;
+        $object->user_id=Yii::$app->user->identity->getId();
+        return $object;
+    }
+
+    public function edit(int $amount): void
+    {
+        $this->amount = $amount;
+    }
+
     public static function tableName()
     {
         return 'transaction';
@@ -44,22 +60,47 @@ class Transaction extends \yii\db\ActiveRecord
             ]
         ];
     }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['amount','currency', 'account_id', 'category_id', 'date'], 'required'],
-            [['amount', 'user_id', 'account_id', 'category_id', 'family_id', 'created_at'], 'integer'],
+            [['amount', 'currency', 'account_id', 'category_id', 'date'], 'required'],
+            [['amount', 'user_id', 'account_id', 'category_id', 'family_id', 'created_at','receiver'], 'integer'],
             ['user_id', 'default', 'value' => strval(Yii::$app->user->identity->getId())],
             [['date'], 'safe'],
             [['currency'], 'string', 'max' => 255],
 
-            [['account_id'], 'exist', 'skipOnError' => true, 'targetClass' => Account::className(), 'targetAttribute' => ['account_id' => 'id']],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['family_id'], 'exist', 'skipOnError' => true, 'targetClass' => Family::className(), 'targetAttribute' => ['family_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                ['account_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Account::className(),
+                'targetAttribute' => ['account_id' => 'id']
+            ],
+            [
+                ['category_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Category::className(),
+                'targetAttribute' => ['category_id' => 'id']
+            ],
+            [
+                ['family_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Family::className(),
+                'targetAttribute' => ['family_id' => 'id']
+            ],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => ['user_id' => 'id']
+            ],
         ];
     }
 

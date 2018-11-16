@@ -3,10 +3,10 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Transaction';
+$this->title = 'Account';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<p>Your transaction information</p>
+<p>Your account information</p>
 
 <ul>
 

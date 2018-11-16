@@ -9,7 +9,7 @@ use yii\data\ActiveDataProvider;
 /**
  * TransactionSearch represents the model behind the search form of `common\models\Transaction`.
  */
-class TransactionUserSearch extends Transaction
+class TransactionTrUserSearch extends Transaction
 {
     /**
      * {@inheritdoc}
@@ -48,7 +48,7 @@ class TransactionUserSearch extends Transaction
             ->joinWith('account')
             ->joinWith('category')
             ->where('transaction.user_id=:user_id', [':user_id' => $us])
-            ->andWhere(['!=', 'category.name', 'Transfer']);
+            ->andWhere(['category.name'=> 'Transfer']);
 
 
         $dataProvider = new ActiveDataProvider([

@@ -60,7 +60,9 @@ $this->title = 'Family money';
                 <p><ul>
                     <li><a href="http://fam_money.test/category/create">Create category</a></li>
                     <li><a href="http://fam_money.test/transaction/create">Create transaction</a></li>
+                    <li><a href="http://fam_money.test/transaction/transfer">Create transfer between accounts</a></li>
                     <li><a href="http://fam_money.test/transaction/index">My transactions</a></li>
+                    <li><a href="http://fam_money.test/transaction/indextransfer">My transfers</a></li>
                 </ul><p>
             </div>
 

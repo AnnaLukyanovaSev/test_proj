@@ -4,13 +4,12 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\Transaction;
+use common\models\TransactionTrUserSearch;
 use common\models\TransactionUserSearch;
-use yii\base\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\Account;
-use yii\db\Expression;
 
 /**
  * TransactionController implements the CRUD actions for Transaction model.
@@ -45,7 +44,15 @@ class TransactionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-
+    public function actionIndextransfer()
+    {
+        $searchModel = new TransactionTrUserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     /**
      * Displays a single Transaction model.
      * @param integer $id
@@ -58,6 +65,20 @@ class TransactionController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+
+    /**
+     * Displays a single Transaction model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionViewtransfer($id)
+    {
+        return $this->render('viewtransfer', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
 
     /**
      * Creates a new Transaction model.
@@ -78,6 +99,61 @@ class TransactionController extends Controller
         ]);
     }
 
+    public function actionTransfer()
+    {
+        $model = new Transaction();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['viewtransfer', 'id' => $model->id])
+                && Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id])
+                && Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->receiver])
+                && Transaction::create(
+                    (-1) * $model->amount,
+                    $model->currency,
+                    $model->receiver,
+                    $model->category_id,
+                    $model->date
+                )
+                    ->save();
+        }
+
+        return $this->render('transfer', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Transaction model transfer.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Exception|\Throwable in case update failed.
+     */
+    public function actionUpdatetransfer($id)
+    {
+        $model = $this->findModel($id);
+        Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
+        $inverse = Transaction::find()->where(['>','created_at' ,-1+ $model->created_at])
+            ->andWhere(['<','created_at' ,3+ $model->created_at])
+            ->andWhere(['!=', 'id', $model->id])->one();
+        Account::updateAllCounters(['amount' => $model->amount], ['id' => $inverse['account_id']]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+            Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $inverse['account_id']]);
+            $x = Transaction::findOne($inverse['id']);
+            $x->amount = (-1)*$model->amount;
+            $x->update();
+            return $this->redirect(['viewtransfer', 'id' => $model->id]);
+        } else {
+            Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+            Account::updateAllCounters(['amount' =>  (-1)*$model->amount], ['id' => $inverse['account_id']]);
+        }
+
+        return $this->render('updatetransfer', ['model' => $model,]);
+    }
+
     /**
      * Updates an existing Transaction model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -88,30 +164,52 @@ class TransactionController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
             return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
         }
-
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model,]);
     }
 
+
     /**
-     * Deletes an existing Transaction model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
+     * @throws NotFoundHttpException
      */
+
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }
+    /**
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
 
+    public function actionDeletetransfer($id)
+    {
+        $model = $this->findModel($id);
+        Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
+        $inverse = Transaction::find()->where(['>','created_at' ,-1+ $model->created_at])
+            ->andWhere(['<','created_at' ,3+ $model->created_at])
+            ->andWhere(['!=', 'id', $model->id])->one();
+        Account::updateAllCounters(['amount' => $model->amount], ['id' => $inverse['account_id']]);
+        Transaction::findOne($inverse['id'])->delete();
+        $model->delete();
+
+        return $this->redirect(['index']);
+    }
     /**
      * Finds the Transaction model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

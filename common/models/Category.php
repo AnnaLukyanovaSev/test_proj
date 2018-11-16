@@ -25,11 +25,11 @@ class Category extends ActiveRecord
     public function behaviors()
     {
         return [
+            'htmlTree' => [
+                'class' => NestedSetsTreeBehavior::className(),
+            ],
             'tree' => [
                 'class' => NestedSetsBehavior::className(),
-            ],
-            'htmlTree' => [
-                'class' => NestedSetsTreeBehavior::className()
             ],
             [
                 'class' => TimestampBehavior::className(),
@@ -115,18 +115,22 @@ class Category extends ActiveRecord
         return $this->hasMany(Transaction::className(), ['category_id' => 'id']);
     }
 
-    public static function tree(): array
+    public static function tre(): array
     {
-        $all = self::find()->select(['id', 'name', 'lft', 'rgt', 'depth'])->asArray()->all();
-        $maxDepth = self::find()->max('depth');
-        foreach ($all as $row) {
-            if ($row['depth'] == 0) {
-                ;
-            };
-        }
-        $tree = [
+        $us = Yii::$app->user->identity->getId();
+        $all = self::find()->select("id,name, created_at,lft,rgt,depth")
+            ->where('user_id=:user_id', [':user_id' => $us])->orWhere(['user_id' => '1'])
+            ->andWhere(['>', 'depth', '0'])->andWhere(['!=', 'name', 'Transfer'])->groupBy([
+                'lft',
+                'id'
+            ])->asArray()->all();
 
-        ];
-        return $tree;
+        foreach ($all as $key => $row) {
+            for ($i = 0; $i <= $all[$key]['depth']; $i++) {
+                $all[$key]['name'] = "-----" . $all[$key]['name'];
+            }
+        }
+
+        return $all;
     }
 }

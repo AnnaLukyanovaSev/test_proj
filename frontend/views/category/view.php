@@ -3,10 +3,10 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Account';
+$this->title = 'Category';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<p>Your account information</p>
+<p>Your category information</p>
 
 <ul>
     <li><label>Name</label>: <?= Html::encode($model->name) ?></li>

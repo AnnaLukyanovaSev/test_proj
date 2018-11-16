@@ -42,6 +42,7 @@ class CategoryUserSearch extends Category
     public function search($params)
     {
         $us =Yii::$app->user->identity->getId();
+
         $query = Category::find()->select("id,name, created_at,lft,rgt,depth")
             ->where('user_id=:user_id', [':user_id' => $us]);
 
