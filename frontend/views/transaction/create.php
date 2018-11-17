@@ -38,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ])->label('Category of transaction')
     ?>
-    <?= date_default_timezone_set('Europe/Simferopol'); ?>
     <?= $form->field($model, 'date')->textInput(['type' => 'date', 'value' => date('Y-m-d')]) ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

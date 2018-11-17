@@ -94,13 +94,24 @@ class TransactionController extends Controller
         $model = new Transaction();
 
         if ($model->load(Yii::$app->request->post())) {
+            //transform of category_id for DB from Widget View
             $cond = ltrim($model->sub, '_') - 1;
-            $arrId = Category::find()->select(['id', 'lft', 'name','user_id'])
+            $arrId = Category::find()->select(['id', 'lft', 'name', 'user_id'])
                 ->where(['user_id' => 1])
                 ->orWhere(['user_id' => Yii::$app->user->identity->getId()])
-                ->andWhere(['!=','name','Transfer'])
-            ->orderBy('lft')->asArray()->all();
+                ->andWhere(['!=', 'name', 'Transfer'])
+                ->orderBy('lft')->asArray()->all();
             $model->category_id = $arrId[$cond]['id'];
+
+            // sign of amount.begin.
+            $model->amount = abs($model->amount);
+            $catQ = Category::findOne(['id' => $model->category_id]);
+            $cat = Category::findOne(['id' => $model->category_id,'name' => 'Expense']);
+            $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
+            if ($cat !== null || $parents !== null) {
+                $model->amount = -$model->amount;
+            }
+            // sign of amount.end.
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id])
                     && Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
@@ -180,12 +191,21 @@ class TransactionController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $cond = ltrim($model->sub, '_') - 1;
-            $arrId = Category::find()->select(['id', 'lft', 'name','user_id'])
+            $arrId = Category::find()->select(['id', 'lft', 'name', 'user_id'])
                 ->where(['user_id' => 1])
                 ->orWhere(['user_id' => Yii::$app->user->identity->getId()])
-                ->andWhere(['!=','name','Transfer'])
+                ->andWhere(['!=', 'name', 'Transfer'])
                 ->orderBy('lft')->asArray()->all();
             $model->category_id = $arrId[$cond]['id'];
+            // sign of amount.begin.
+            $model->amount = abs($model->amount);
+            $catQ = Category::findOne(['id' => $model->category_id]);
+            $cat = Category::findOne(['id' => $model->category_id,'name' => 'Expense']);
+            $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
+            if ($cat !== null || $parents !== null) {
+                $model->amount = -$model->amount;
+            }
+            // sign of amount.end.
             if ($model->save()) {
                 Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
                 return $this->redirect(['view', 'id' => $model->id]);

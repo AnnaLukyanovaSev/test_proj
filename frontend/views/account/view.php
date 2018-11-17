@@ -12,7 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <li><label>Amount</label>: <?= Html::encode($model->amount), Html::encode(' '), Html::encode($model->currency) ?>
     </li>
-    <li><label>Created at</label>: <?= Html::encode(date('d-M-Y H:i:s',$model->created_at)) ?>
+    <li><label>Created at UTC time</label>: <?= Html::encode(date('d-M-Y H:i:s',$model->created_at)) ?>
 </li></ul>
 <p>
     <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>

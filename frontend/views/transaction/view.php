@@ -10,7 +10,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <ul>
     <li><label>Amount</label>: <?= Html::encode($model->amount), Html::encode(' '), Html::encode($model->currency) ?>
-    <li><label>Created at</label>: <?= Html::encode(date('d-M-Y H:i:s',$model->created_at)) ?></li>
+    <li><label>Created at UTC time</label>: <?= Html::encode(date('d-M-Y H:i:s',$model->created_at)) ?></li>
     <li><label>Date of transaction</label>: <?= Html::encode($model->date) ?></li>
 </li></ul>
 <p>
