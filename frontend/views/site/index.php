@@ -58,7 +58,7 @@ $this->title = 'Family money';
 
                 <p>Create,update and delete your account transactions in different currencies.</p>
                 <p><ul>
-                    <li><a href="http://fam_money.test/category/create">Create category</a></li>
+                    <li><a href="http://fam_money.test/category/create">Create own category of transaction</a></li>
                     <li><a href="http://fam_money.test/transaction/create">Create transaction</a></li>
                     <li><a href="http://fam_money.test/transaction/transfer">Create transfer between accounts</a></li>
                     <li><a href="http://fam_money.test/transaction/index">My transactions</a></li>

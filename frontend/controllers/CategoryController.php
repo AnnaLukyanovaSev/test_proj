@@ -70,26 +70,29 @@ class CategoryController extends Controller
     {
         $model = new Category();
         if ($model->load(Yii::$app->request->post())) { //если в приложении можно делать post - запросы, то..
-            if ($model->sub == null) { // ..если нет выбора категорий вообще, создаем root
+            if ($model->sub == null) { // ..если нет выбора категорий вообще, создаем root ()
                 $model->makeRoot();
             } else { // ..если есть корень - > все остальные категории - потомки
-                $cond = ltrim($model->sub, '_')-1;
-                $arrId = Category::find()->select(['id','lft','name'])->orderBy('lft')->asArray()->all();
+                $cond = ltrim($model->sub, '_') - 1;
+                $arrId = Category::find()->select(['id', 'lft', 'name'])
+                    ->where(['user_id' => 1])
+                    ->orWhere(['user_id' => Yii::$app->user->identity->getId()])
+                    ->orderBy('lft')->asArray()->all();
                 $parentID = $arrId[$cond]['id'];
                 $parent = Category::find()->where(['id' => $parentID])->one();
                 // ищем родителя с id, соответствующим выбранной категории
-                 $model->prependTo($parent); // прикрепляем потомка
-              /*  return $this->render('create', [
-                    'model' => $model,
-                    'data' => Category::findOne(['name' => 'Expense'])->tree(),
-                    'ok' => $parentID,
-                ]); */
+                $model->prependTo($parent); // прикрепляем потомка
+                /*  return $this->render('create', [
+                      'model' => $model,
+                      'data' => Category::findOne(['name' => 'Expense'])->tree(),
+                      'ok' => $parentID,
+                  ]); */
             }
         }
         if ($model->save()) {
             //   return $this->render('view', ['model' => $model,'data' => Category::findOne(['depth' => 0])->tree()]);
             return $this->render('view', ['model' => $model,]);
-        }
+    }
 
         return $this->render('create', [
             'model' => $model,
@@ -122,7 +125,9 @@ class CategoryController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if ($this->findModel($id)->deleteWithChildren() !== null) {
+            return $this->redirect(['index']);
+        };
 
         return $this->redirect(['index']);
     }

@@ -26,7 +26,7 @@ use yii\behaviors\TimestampBehavior;
 class Transaction extends \yii\db\ActiveRecord
 {
     public $receiver;
-
+    public $sub;
     public static function create(int $amount, string $currency, int $account_id, int $category_id, $date): self
     {
         $object = new static();
@@ -67,11 +67,11 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['amount', 'currency', 'account_id', 'category_id', 'date'], 'required'],
+            [['amount', 'currency', 'account_id', 'category_id', 'date','sub'], 'required'],
             [['amount', 'user_id', 'account_id', 'category_id', 'family_id', 'created_at','receiver'], 'integer'],
             ['user_id', 'default', 'value' => strval(Yii::$app->user->identity->getId())],
             [['date'], 'safe'],
-            [['currency'], 'string', 'max' => 255],
+            [['currency','sub'], 'string', 'max' => 255],
 
             [
                 ['account_id'],

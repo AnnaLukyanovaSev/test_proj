@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use Yii;
 use common\models\Transaction;
+use common\models\Category;
 use common\models\TransactionTrUserSearch;
 use common\models\TransactionUserSearch;
 use yii\web\Controller;
@@ -19,6 +20,7 @@ class TransactionController extends Controller
     /**
      * {@inheritdoc}
      */
+
     public function behaviors()
     {
         return [
@@ -44,6 +46,7 @@ class TransactionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     public function actionIndextransfer()
     {
         $searchModel = new TransactionTrUserSearch();
@@ -53,6 +56,7 @@ class TransactionController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
     /**
      * Displays a single Transaction model.
      * @param integer $id
@@ -89,11 +93,19 @@ class TransactionController extends Controller
     {
         $model = new Transaction();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id])
-                && Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $cond = ltrim($model->sub, '_') - 1;
+            $arrId = Category::find()->select(['id', 'lft', 'name','user_id'])
+                ->where(['user_id' => 1])
+                ->orWhere(['user_id' => Yii::$app->user->identity->getId()])
+                ->andWhere(['!=','name','Transfer'])
+            ->orderBy('lft')->asArray()->all();
+            $model->category_id = $arrId[$cond]['id'];
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id])
+                    && Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+            }
         }
-
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -134,8 +146,8 @@ class TransactionController extends Controller
     {
         $model = $this->findModel($id);
         Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
-        $inverse = Transaction::find()->where(['>','created_at' ,-1+ $model->created_at])
-            ->andWhere(['<','created_at' ,3+ $model->created_at])
+        $inverse = Transaction::find()->where(['>', 'created_at', -1 + $model->created_at])
+            ->andWhere(['<', 'created_at', 3 + $model->created_at])
             ->andWhere(['!=', 'id', $model->id])->one();
         Account::updateAllCounters(['amount' => $model->amount], ['id' => $inverse['account_id']]);
 
@@ -143,12 +155,12 @@ class TransactionController extends Controller
             Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
             Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $inverse['account_id']]);
             $x = Transaction::findOne($inverse['id']);
-            $x->amount = (-1)*$model->amount;
+            $x->amount = (-1) * $model->amount;
             $x->update();
             return $this->redirect(['viewtransfer', 'id' => $model->id]);
         } else {
             Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
-            Account::updateAllCounters(['amount' =>  (-1)*$model->amount], ['id' => $inverse['account_id']]);
+            Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $inverse['account_id']]);
         }
 
         return $this->render('updatetransfer', ['model' => $model,]);
@@ -166,11 +178,20 @@ class TransactionController extends Controller
         $model = $this->findModel($id);
         Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $cond = ltrim($model->sub, '_') - 1;
+            $arrId = Category::find()->select(['id', 'lft', 'name','user_id'])
+                ->where(['user_id' => 1])
+                ->orWhere(['user_id' => Yii::$app->user->identity->getId()])
+                ->andWhere(['!=','name','Transfer'])
+                ->orderBy('lft')->asArray()->all();
+            $model->category_id = $arrId[$cond]['id'];
+            if ($model->save()) {
+                Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+            }
         }
         return $this->render('update', ['model' => $model,]);
     }
@@ -191,6 +212,7 @@ class TransactionController extends Controller
 
         return $this->redirect(['index']);
     }
+
     /**
      * @param integer $id
      * @return mixed
@@ -201,8 +223,8 @@ class TransactionController extends Controller
     {
         $model = $this->findModel($id);
         Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
-        $inverse = Transaction::find()->where(['>','created_at' ,-1+ $model->created_at])
-            ->andWhere(['<','created_at' ,3+ $model->created_at])
+        $inverse = Transaction::find()->where(['>', 'created_at', -1 + $model->created_at])
+            ->andWhere(['<', 'created_at', 3 + $model->created_at])
             ->andWhere(['!=', 'id', $model->id])->one();
         Account::updateAllCounters(['amount' => $model->amount], ['id' => $inverse['account_id']]);
         Transaction::findOne($inverse['id'])->delete();
@@ -210,6 +232,7 @@ class TransactionController extends Controller
 
         return $this->redirect(['index']);
     }
+
     /**
      * Finds the Transaction model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
+use gudezi\fancytree\FancytreeWidget;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Account */
@@ -32,9 +33,14 @@ $this->params['breadcrumbs'][] = 'Update';
         'UAH' => 'UAH'
     ]) ?>
 
-    <?= $form->field($model, 'category_id')
-        ->dropDownList(ArrayHelper::map(common\models\Category::find()->all(), 'id', 'name'))
-        ->label('Parent category') ?>
+    <?=$form->field($model, 'sub')->widget(FancytreeWidget::classname(), [
+        'name' => 'fancytree',
+        'source' => common\models\Category::findOne(['name' => 'Expense'])->tree(),
+        'clickFolderMode' => FancytreeWidget::CLICK_ACTIVATE_EXPAND,
+        'options' => [
+        ],
+    ])->label('Category of transaction')
+    ?>
 
     <?= $form->field($model, 'date')->textInput(['type' => 'date']) ?>
 

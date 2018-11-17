@@ -7,6 +7,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
+use gudezi\fancytree\FancytreeWidget;
 
 $this->title = 'Create transaction';
 $this->params['breadcrumbs'][] = $this->title;
@@ -26,12 +27,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ->all(), 'id', 'name'))->label('Account name') ?>
 
     <?= $form->field($model, 'currency')->
-    dropDownList(ArrayHelper::map(common\models\Account::find()->all(), 'id', 'currency')) ?>
+    dropDownList(ArrayHelper::map(common\models\Account::find()->all(), 'currency', 'currency')) ?>
 
-    <?= $form->field($model, 'category_id')
-        ->dropDownList(ArrayHelper::map(common\models\Category::tree(), 'id', 'name'))
-        ->label('Transaction category') ?>
 
+    <?=$form->field($model, 'sub')->widget(FancytreeWidget::classname(), [
+        'name' => 'fancytree',
+        'source' => common\models\Category::findOne(['name' => 'Expense'])->tree(),
+        'clickFolderMode' => FancytreeWidget::CLICK_ACTIVATE_EXPAND,
+        'options' => [
+        ],
+    ])->label('Category of transaction')
+    ?>
+    <?= date_default_timezone_set('Europe/Simferopol'); ?>
     <?= $form->field($model, 'date')->textInput(['type' => 'date', 'value' => date('Y-m-d')]) ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

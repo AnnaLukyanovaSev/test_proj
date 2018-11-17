@@ -6,8 +6,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
-use yii\web\JsExpression;
 use gudezi\fancytree\FancytreeWidget;
 
 $this->title = 'Create category';
