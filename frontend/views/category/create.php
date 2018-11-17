@@ -18,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>Please, fill out the following fields:</p>
+    <p><?= ''//var_dump($ok) ?></p>
 
     <?php $form = ActiveForm::begin(); ?>
 

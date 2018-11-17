@@ -73,14 +73,17 @@ class CategoryController extends Controller
             if ($model->sub == null) { // ..если нет выбора категорий вообще, создаем root
                 $model->makeRoot();
             } else { // ..если есть корень - > все остальные категории - потомки
-               // $parent1 = Category::find()->where(['id' => 9])->one();
-                $arrId = Category::find()->select('id')->asArray()->all();
                 $cond = ltrim($model->sub, '_')-1;
+                $arrId = Category::find()->select(['id','lft','name'])->orderBy('lft')->asArray()->all();
                 $parentID = $arrId[$cond]['id'];
                 $parent = Category::find()->where(['id' => $parentID])->one();
                 // ищем родителя с id, соответствующим выбранной категории
-                  $model->prependTo($parent); // прикрепляем потомка
-
+                 $model->prependTo($parent); // прикрепляем потомка
+              /*  return $this->render('create', [
+                    'model' => $model,
+                    'data' => Category::findOne(['name' => 'Expense'])->tree(),
+                    'ok' => $parentID,
+                ]); */
             }
         }
         if ($model->save()) {
