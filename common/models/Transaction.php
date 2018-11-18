@@ -67,7 +67,7 @@ class Transaction extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['amount', 'currency', 'account_id', 'category_id', 'date','sub'], 'required'],
+            [['amount', 'currency', 'account_id', 'category_id', 'date'], 'required'],
             [['amount', 'user_id', 'account_id', 'category_id', 'family_id', 'created_at','receiver'], 'integer'],
             ['user_id', 'default', 'value' => strval(Yii::$app->user->identity->getId())],
             [['date'], 'safe'],

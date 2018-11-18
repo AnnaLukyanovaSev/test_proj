@@ -139,8 +139,7 @@ class TransactionController extends Controller
                     $model->receiver,
                     $model->category_id,
                     $model->date
-                )
-                    ->save();
+                )->save();
         }
 
         return $this->render('transfer', [

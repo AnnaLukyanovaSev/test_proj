@@ -41,14 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
         ->dropDownList([],[
                 'prompt' => '...',
                 'id' => 'x'
-            ]) ?>
+            ])->label('To account') ?>
 
     <?= $form->field($model, 'currency')->dropDownList([], [
         'prompt' => '...',
         'id' => 'currency'
     ]) ?>
 
-    ---------------------------------------------------------------------------------------------------------------------
     <?= $form->field($model, 'category_id')
         ->dropDownList(ArrayHelper::map(common\models\Category::find()->where(['name' => 'Transfer'])
             ->all(), 'id', 'name'))->label('Transaction category') ?>
