@@ -23,7 +23,17 @@ class AccountController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['view', 'error', 'create', 'update', 'index', 'delete', 'stat', 'lists'],
+                        'actions' => [
+                            'view',
+                            'error',
+                            'create',
+                            'update',
+                            'index',
+                            'delete',
+                            'stat',
+                            'lists',
+                            'listing'
+                        ],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -139,6 +149,7 @@ class AccountController extends Controller
         return $this->render('stat', ['model' => $ar]);
     }
 
+    /// for creating and updating transactions
     public function actionLists($id)
     {
         $posts = Account::find()
@@ -154,6 +165,25 @@ class AccountController extends Controller
             echo "<option>-</option>";
         }
     }
+
+    public function actionListing($id)
+    {
+        $curr=Account::find()
+            ->select('currency')
+            ->where(['id' => $id])
+            ->scalar();
+        $posts = Account::find()
+            ->where(['currency' => $curr])
+            ->andWhere(['user_id' =>Yii::$app->user->identity->getId()])
+            ->orderBy('id DESC')
+            ->all();
+
+        if (!empty($posts)) {
+            foreach ($posts as $post) {
+                echo "<option value='" . $post->id . "'>" . $post->name . "</option>";
+            }
+        } else {
+            echo "<option>-</option>";
+        }
+    }
 }
-
-

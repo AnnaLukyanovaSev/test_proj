@@ -40,12 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <?= $form->field($model, 'currency')
-        //->dropDownList(ArrayHelper::map(\common\models\Account::find()
-        //   ->where(['user_id' => Yii::$app->user->identity->getId()])
-        //   ->asArray()->all(), 'currency', 'currency'), ['id' => 'currency'])
-        ->dropDownList(ArrayHelper::map(\common\models\Account::find()
-            ->where(['user_id' => Yii::$app->user->identity->getId()])
-            ->asArray()->all(), 'currency', 'currency'),
+        ->dropDownList([],
             [
                 'prompt' => '...',
                 'id' => 'currency'

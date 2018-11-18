@@ -95,6 +95,9 @@ class TransactionController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             //transform of category_id for DB from Widget View
+            if ($model->sub == null) {
+                $model->sub = '_1';
+            }
             $cond = ltrim($model->sub, '_') - 1;
             $arrId = Category::find()->select(['id', 'lft', 'name', 'user_id'])
                 ->where(['user_id' => 1])
@@ -106,7 +109,7 @@ class TransactionController extends Controller
             // sign of amount.begin.
             $model->amount = abs($model->amount);
             $catQ = Category::findOne(['id' => $model->category_id]);
-            $cat = Category::findOne(['id' => $model->category_id,'name' => 'Expense']);
+            $cat = Category::findOne(['id' => $model->category_id, 'name' => 'Expense']);
             $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
             if ($cat !== null || $parents !== null) {
                 $model->amount = -$model->amount;
@@ -190,6 +193,9 @@ class TransactionController extends Controller
         Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
 
         if ($model->load(Yii::$app->request->post())) {
+            if ($model->sub == null) {
+                $model->sub = '_1';
+            }
             $cond = ltrim($model->sub, '_') - 1;
             $arrId = Category::find()->select(['id', 'lft', 'name', 'user_id'])
                 ->where(['user_id' => 1])
@@ -200,7 +206,7 @@ class TransactionController extends Controller
             // sign of amount.begin.
             $model->amount = abs($model->amount);
             $catQ = Category::findOne(['id' => $model->category_id]);
-            $cat = Category::findOne(['id' => $model->category_id,'name' => 'Expense']);
+            $cat = Category::findOne(['id' => $model->category_id, 'name' => 'Expense']);
             $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
             if ($cat !== null || $parents !== null) {
                 $model->amount = -$model->amount;
@@ -213,7 +219,7 @@ class TransactionController extends Controller
                 Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
             }
         }
-        return $this->render('update', ['model' => $model,]);
+        return $this->render('update', ['model' => $model,'id' => $id]);
     }
 
 

@@ -24,16 +24,29 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $form->field($model, 'account_id')
         ->dropDownList(ArrayHelper::map(common\models\Account::find()
             ->where(['user_id' => Yii::$app->user->identity->getId()])
-            ->all(), 'id', 'name'))->label('Account name') ?>
+            ->asArray()->all(), 'id', 'name'),
+            [
+                'prompt' => 'Choose your account',
+                'onchange' => '
+                $.post( "' . Yii::$app->urlManager->createUrl('account/lists?id=') . '"+$(this).val(), function( data ) {
+				  $( "select#currency" ).html( data );
 
-    <?= $form->field($model, 'currency')->dropDownList([
-        'RUB' => 'RUB',
-        'EUR' => 'EUR',
-        'USD' => 'USD',
-        'UAH' => 'UAH'
-    ]) ?>
+				});
+			'
+            ])->label('Account name');
 
-    <?=$form->field($model, 'sub')->widget(FancytreeWidget::classname(), [
+    ?>
+
+    <?= $form->field($model, 'currency')
+        ->dropDownList(ArrayHelper::map(common\models\Account::find()
+            ->where(['id' => $id])
+            ->asArray()->all(), 'currency', 'currency'),
+            [
+                'prompt' => '...',
+                'id' => 'currency'
+            ]) ?>
+
+    <?= $form->field($model, 'sub')->widget(FancytreeWidget::classname(), [
         'name' => 'fancytree',
         'source' => common\models\Category::findOne(['name' => 'Expense'])->tree(),
         'clickFolderMode' => FancytreeWidget::CLICK_ACTIVATE_EXPAND,
