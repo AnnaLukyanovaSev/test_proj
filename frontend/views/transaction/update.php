@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = 'Update';
             ->where(['id' => $id])
             ->asArray()->all(), 'currency', 'currency'),
             [
-                'prompt' => '...',
+                'prompt' =>'..' ,
                 'id' => 'currency'
             ]) ?>
 

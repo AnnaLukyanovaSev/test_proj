@@ -107,13 +107,13 @@ class TransactionController extends Controller
             $model->category_id = $arrId[$cond]['id'];
 
             // sign of amount.begin.
-            $model->amount = abs($model->amount);
-            $catQ = Category::findOne(['id' => $model->category_id]);
-            $cat = Category::findOne(['id' => $model->category_id, 'name' => 'Expense']);
-            $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
-            if ($cat !== null || $parents !== null) {
-                $model->amount = -$model->amount;
-            }
+            //  $model->amount = abs($model->amount);
+            // $catQ = Category::findOne(['id' => $model->category_id]);
+            // $cat = Category::findOne(['id' => $model->category_id, 'name' => 'Expense']);
+            // $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
+            // if ($cat !== null || $parents !== null) {
+            //     $model->amount = -$model->amount;
+            //  }
             // sign of amount.end.
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id])
@@ -190,8 +190,8 @@ class TransactionController extends Controller
     {
         $model = $this->findModel($id);
         Account::updateAllCounters(['amount' => (-1) * $model->amount], ['id' => $model->account_id]);
-
         if ($model->load(Yii::$app->request->post())) {
+
             if ($model->sub == null) {
                 $model->sub = '_1';
             }
@@ -203,22 +203,21 @@ class TransactionController extends Controller
                 ->orderBy('lft')->asArray()->all();
             $model->category_id = $arrId[$cond]['id'];
             // sign of amount.begin.
-            $model->amount = abs($model->amount);
-            $catQ = Category::findOne(['id' => $model->category_id]);
-            $cat = Category::findOne(['id' => $model->category_id, 'name' => 'Expense']);
-            $parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
-            if ($cat !== null || $parents !== null) {
-                $model->amount = -$model->amount;
-            }
+          //  $model->amount = abs($model->amount);
+            //$catQ = Category::findOne(['id' => $model->category_id]);
+            //$cat = Category::findOne(['id' => $model->category_id, 'name' => 'Expense']);
+            //$parents = $catQ->parents()->where(['name' => 'Expense'])->asArray()->all();
+            //if ($cat !== null || $parents !== null) {
+             //   $model->amount = -$model->amount;
+            //}
             // sign of amount.end.
             if ($model->save()) {
                 Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
                 return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
             }
         }
-        return $this->render('update', ['model' => $model,'id' => $id]);
+        Account::updateAllCounters(['amount' => $model->amount], ['id' => $model->account_id]);
+        return $this->render('update', ['model' => $model, 'id' => $id]);
     }
 
 
