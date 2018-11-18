@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed48eb247108024db8fe224db643b4cd",
+    "content-hash": "41e997584b9fa895765d40504939052e",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -30,16 +30,16 @@
         },
         {
             "name": "bower-asset/fancytree",
-            "version": "v2.30.0",
+            "version": "v2.30.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mar10/fancytree.git",
-                "reference": "21b92ffbc76cf28d4918f67c619c082ad69571bd"
+                "reference": "d3db828cf19ba294601a3d6f79aa07f9832450a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mar10/fancytree/zipball/21b92ffbc76cf28d4918f67c619c082ad69571bd",
-                "reference": "21b92ffbc76cf28d4918f67c619c082ad69571bd",
+                "url": "https://api.github.com/repos/mar10/fancytree/zipball/d3db828cf19ba294601a3d6f79aa07f9832450a1",
+                "reference": "d3db828cf19ba294601a3d6f79aa07f9832450a1",
                 "shasum": null
             },
             "require": {
@@ -456,31 +456,28 @@
             "time": "2016-10-19T18:53:10+00:00"
         },
         {
-            "name": "kartik-v/yii2-dialog",
-            "version": "v1.0.5",
+            "name": "kartik-v/dependent-dropdown",
+            "version": "v1.4.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kartik-v/yii2-dialog.git",
-                "reference": "c38616d719f52530749457c022ca6134d0ad31ce"
+                "url": "https://github.com/kartik-v/dependent-dropdown.git",
+                "reference": "1349e7f5816a65e89bc227098386aac5b2c89363"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-dialog/zipball/c38616d719f52530749457c022ca6134d0ad31ce",
-                "reference": "c38616d719f52530749457c022ca6134d0ad31ce",
+                "url": "https://api.github.com/repos/kartik-v/dependent-dropdown/zipball/1349e7f5816a65e89bc227098386aac5b2c89363",
+                "reference": "1349e7f5816a65e89bc227098386aac5b2c89363",
                 "shasum": ""
             },
-            "require": {
-                "kartik-v/yii2-krajee-base": ">=2.0.0"
-            },
-            "type": "yii2-extension",
+            "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "kartik\\dialog\\": "src"
+                    "kartik\\plugins\\depdrop\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -494,40 +491,38 @@
                     "homepage": "http://www.krajee.com/"
                 }
             ],
-            "description": "An asset bundle for bootstrap3-dialog for Yii 2.0 framework.",
-            "homepage": "https://github.com/kartik-v/yii2-dialog",
+            "description": "A multi level dependent dropdown JQuery plugin that allows nested dependencies.",
+            "homepage": "https://github.com/kartik-v/dependent-dropdown",
             "keywords": [
-                "alert",
-                "bootstrap",
-                "dialog",
-                "extension",
-                "modal",
-                "yii2"
+                "dependent",
+                "dropdown",
+                "jquery",
+                "option",
+                "select"
             ],
-            "time": "2018-10-09T08:08:51+00:00"
+            "time": "2017-08-01T11:43:55+00:00"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
-            "version": "v2.0.1",
+            "version": "v1.9.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-krajee-base.git",
-                "reference": "0690e9b119d9116098cbae4f15703c14f9c264b2"
+                "reference": "1693374160c24443524ddc23508d2eb2955443f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/0690e9b119d9116098cbae4f15703c14f9c264b2",
-                "reference": "0690e9b119d9116098cbae4f15703c14f9c264b2",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/1693374160c24443524ddc23508d2eb2955443f4",
+                "reference": "1693374160c24443524ddc23508d2eb2955443f4",
                 "shasum": ""
             },
-            "suggest": {
-                "yiisoft/yii2-bootstrap": "for Krajee extensions to work with Bootstrap 3.x version",
-                "yiisoft/yii2-bootstrap4": "for Krajee extensions to work with Bootstrap 4.x version"
+            "require": {
+                "yiisoft/yii2-bootstrap": "@dev"
             },
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "1.9.x-dev"
                 }
             },
             "autoload": {
@@ -556,36 +551,35 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2018-11-10T11:06:12+00:00"
+            "time": "2018-09-27T18:02:35+00:00"
         },
         {
-            "name": "kartik-v/yii2-tree-manager",
+            "name": "kartik-v/yii2-widget-depdrop",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/kartik-v/yii2-tree-manager.git",
-                "reference": "82a1868370ab74a4687bec1f6159583d707f2f13"
+                "url": "https://github.com/kartik-v/yii2-widget-depdrop.git",
+                "reference": "dce295cf59bd01dd0933b599f964618d8233a7fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-tree-manager/zipball/82a1868370ab74a4687bec1f6159583d707f2f13",
-                "reference": "82a1868370ab74a4687bec1f6159583d707f2f13",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-depdrop/zipball/dce295cf59bd01dd0933b599f964618d8233a7fd",
+                "reference": "dce295cf59bd01dd0933b599f964618d8233a7fd",
                 "shasum": ""
             },
             "require": {
-                "creocoder/yii2-nested-sets": "~0.9",
-                "kartik-v/yii2-dialog": "~1.0",
-                "kartik-v/yii2-widget-activeform": ">=1.5.7"
+                "kartik-v/dependent-dropdown": "~1.4",
+                "kartik-v/yii2-krajee-base": "~1.9"
             },
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "kartik\\tree\\": "src"
+                    "kartik\\depdrop\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -599,73 +593,19 @@
                     "homepage": "http://www.krajee.com/"
                 }
             ],
-            "description": "An enhanced tree management module with tree node selection and manipulation using nested sets.",
-            "homepage": "https://github.com/kartik-v/yii2-tree-manager",
+            "description": "Widget that enables setting up dependent dropdowns with nested dependencies (sub repo split from yii2-widgets)",
+            "homepage": "https://github.com/kartik-v/yii2-widget-depdrop",
             "keywords": [
-                "ajax",
-                "bootstrap",
-                "hierarchy",
-                "jquery",
-                "krajee",
-                "nested",
-                "nestedset",
-                "set",
-                "tree",
-                "treeview"
-            ],
-            "time": "2018-11-05T12:37:23+00:00"
-        },
-        {
-            "name": "kartik-v/yii2-widget-activeform",
-            "version": "v1.5.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kartik-v/yii2-widget-activeform.git",
-                "reference": "6bc8bc7231a5c0b1b6e5c89497088266931f9075"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/6bc8bc7231a5c0b1b6e5c89497088266931f9075",
-                "reference": "6bc8bc7231a5c0b1b6e5c89497088266931f9075",
-                "shasum": ""
-            },
-            "require": {
-                "kartik-v/yii2-krajee-base": ">=1.9.8"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "kartik\\form\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Kartik Visweswaran",
-                    "email": "kartikv2@gmail.com",
-                    "homepage": "http://www.krajee.com/"
-                }
-            ],
-            "description": "Enhanced Yii2 active-form and active-field with full bootstrap styling support (sub repo split from yii2-widgets).",
-            "homepage": "https://github.com/kartik-v/yii2-widget-activeform",
-            "keywords": [
-                "activefield",
-                "activeform",
+                "dependent",
+                "dropdown",
                 "extension",
-                "field",
                 "form",
+                "jquery",
+                "plugin",
                 "widget",
                 "yii2"
             ],
-            "time": "2018-09-27T17:51:42+00:00"
+            "time": "2018-11-05T12:33:15+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -725,57 +665,6 @@
                 "mailer"
             ],
             "time": "2018-09-11T07:12:52+00:00"
-        },
-        {
-            "name": "wbraganca/yii2-fancytree-widget",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wbraganca/yii2-fancytree-widget.git",
-                "reference": "97fd3b72aacb067efce839076f8000d43dd06cae"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wbraganca/yii2-fancytree-widget/zipball/97fd3b72aacb067efce839076f8000d43dd06cae",
-                "reference": "97fd3b72aacb067efce839076f8000d43dd06cae",
-                "shasum": ""
-            },
-            "require": {
-                "bower-asset/fancytree": ">=2.12",
-                "yiisoft/yii2": "*",
-                "yiisoft/yii2-jui": "*"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "asset-installer-paths": {
-                    "npm-asset-library": "vendor/npm",
-                    "bower-asset-library": "vendor/bower"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "wbraganca\\fancytree\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Wanderson Bragança",
-                    "email": "wanderson.wbc@gmail.com"
-                }
-            ],
-            "description": "The yii2-fancytree widget is a Yii 2 wrapper for the [Fancytree](https://github.com/mar10/fancytree). A JavaScript dynamic tree view plugin for jQuery with support for persistence, keyboard, checkboxes, tables, drag'n'drop, and lazy loading",
-            "keywords": [
-                "fancytree",
-                "treeview",
-                "wbraganca",
-                "yii2",
-                "yii2-fancytree-widget"
-            ],
-            "time": "2015-11-08T14:15:16+00:00"
         },
         {
             "name": "wokster/yii2-nested-sets-tree-behavior",
@@ -3748,7 +3637,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "kartik-v/yii2-tree-manager": 20
+        "kartik-v/yii2-widget-depdrop": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

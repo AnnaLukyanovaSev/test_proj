@@ -8,6 +8,8 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use gudezi\fancytree\FancytreeWidget;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
 
 $this->title = 'Create transaction';
 $this->params['breadcrumbs'][] = $this->title;
@@ -24,13 +26,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'account_id')
         ->dropDownList(ArrayHelper::map(common\models\Account::find()
             ->where(['user_id' => Yii::$app->user->identity->getId()])
-            ->all(), 'id', 'name'))->label('Account name') ?>
+            ->asArray()->all(), 'id', 'name'),
+            [
+                'prompt' => 'Choose your account',
+                'onchange' => '
+                $.post( "' . Yii::$app->urlManager->createUrl('account/lists?id=') . '"+$(this).val(), function( data ) {
+				  $( "select#currency" ).html( data );
 
-    <?= $form->field($model, 'currency')->
-    dropDownList(ArrayHelper::map(common\models\Account::find()->all(), 'currency', 'currency')) ?>
+				});
+			'
+            ])->label('Account name');
 
+    ?>
 
-    <?=$form->field($model, 'sub')->widget(FancytreeWidget::classname(), [
+    <?= $form->field($model, 'currency')
+        //->dropDownList(ArrayHelper::map(\common\models\Account::find()
+        //   ->where(['user_id' => Yii::$app->user->identity->getId()])
+        //   ->asArray()->all(), 'currency', 'currency'), ['id' => 'currency'])
+        ->dropDownList(ArrayHelper::map(\common\models\Account::find()
+            ->where(['user_id' => Yii::$app->user->identity->getId()])
+            ->asArray()->all(), 'currency', 'currency'),
+            [
+                'prompt' => '...',
+                'id' => 'currency'
+            ]) ?>
+
+    <?= $form->field($model, 'sub')->widget(FancytreeWidget::classname(), [
         'name' => 'fancytree',
         'source' => common\models\Category::findOne(['name' => 'Expense'])->tree(),
         'clickFolderMode' => FancytreeWidget::CLICK_ACTIVATE_EXPAND,
@@ -38,11 +59,13 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ])->label('Category of transaction')
     ?>
+
     <?= $form->field($model, 'date')->textInput(['type' => 'date', 'value' => date('Y-m-d')]) ?>
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
+
 
 </div>

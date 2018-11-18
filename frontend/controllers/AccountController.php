@@ -9,9 +9,13 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 class AccountController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [
@@ -19,7 +23,7 @@ class AccountController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['view', 'error', 'create', 'update', 'index', 'delete', 'stat'],
+                        'actions' => ['view', 'error', 'create', 'update', 'index', 'delete', 'stat', 'lists'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -121,6 +125,7 @@ class AccountController extends Controller
 
         return $this->redirect(['index']);
     }
+
     /**
      * @return mixed
      */
@@ -129,9 +134,26 @@ class AccountController extends Controller
         $st = new AccountUserSearch();
         $ar = $st->statistic();
         //if ($ar['ALL'] == 0) {
-          //  throw new \Exception('No statistics is available now.');
-       // }
+        //  throw new \Exception('No statistics is available now.');
+        // }
         return $this->render('stat', ['model' => $ar]);
     }
+
+    public function actionLists($id)
+    {
+        $posts = Account::find()
+            ->where(['id' => $id])
+            ->orderBy('id DESC')
+            ->all();
+
+        if (!empty($posts)) {
+            foreach ($posts as $post) {
+                echo "<option value='" . $post->currency . "'>" . $post->currency . "</option>";
+            }
+        } else {
+            echo "<option>-</option>";
+        }
+    }
 }
+
 

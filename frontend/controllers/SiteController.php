@@ -212,4 +212,26 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
+    public function actionSubcat()
+    {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = self::getSubCatList($cat_id);
+
+                echo Json::encode(['output' => $out, 'selected' => '']);
+                return;
+            }
+        }
+        echo Json::encode(['output' => '', 'selected' => '']);
+    }
+
+    public function getSubCatList($cat_id)
+    {
+        $models = models\common\Account::find()->where(['id' => $cat_id])->asArray()->all();
+        return ArrayHelper::map($models, 'id', 'currency', 'id');
+    }
 }
