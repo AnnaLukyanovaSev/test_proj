@@ -12,13 +12,9 @@ class RbacController extends Controller
         $auth = Yii::$app->authManager;
         $auth->removeAll();
 
-        $dashboard = $auth->createPermission('dashboard');
-        $dashboard->description = 'Admin panel';
-        $auth->add($dashboard);
-
         $rule = new UserRoleRule();
         $auth->add($rule);
-        //Добавляем роли
+
         $user = $auth->createRole('user');
         $user->description = 'User';
         $user->ruleName = $rule->name;
@@ -29,5 +25,7 @@ class RbacController extends Controller
         $admin->ruleName = $rule->name;
         $auth->add($admin);
         $auth->addChild($admin, $user);
+
+        $this->stdout('Done!' . PHP_EOL);
     }
 }

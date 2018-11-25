@@ -8,6 +8,7 @@ use common\models\FamilySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 
 /**
  * FamilyController implements the CRUD actions for Family model.
@@ -24,6 +25,22 @@ class FamilyController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login', 'error'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'view', 'update', 'delete'],
+                        'roles' => ['admin'],
+                    ],
+
                 ],
             ],
         ];
